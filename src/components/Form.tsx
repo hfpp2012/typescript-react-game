@@ -10,12 +10,21 @@ interface IProps {
 //   age?: number;
 // }
 
-class Form extends Component<IProps> {
+interface IState {
+  age: number;
+  name: string;
+}
+
+class Form extends Component<{}, IState> {
+  state = {
+    name: '111',
+    age: 11
+  }
+
   render() {
     return (
       <div>
-        { this.props.name }
-        { this.props.age }
+        { this.state.age }
       </div>
     );
   }
