@@ -5,10 +5,10 @@ interface IProps {
   age: number;
 }
 
-const Func = ({ age }: IProps) => {
-  // const [name, setName] = React.useState(props.name);
+const Func: React.FunctionComponent<IProps> = ({ age, name }) => {
+  const [myName, setMyName] = React.useState<string>(name);
   return (
-    <div>{ age }</div>
+    <div>{ age } { name }</div>
   )
 }
 
