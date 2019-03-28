@@ -50,3 +50,16 @@
   border: 1px solid black;
   box-sizing: border-box;
 }
+
+.cell:hover {
+  cursor: pointer;
+  background: yellow;
+}
+
+.cell[data-player="1"] {
+  background: green;
+}
+
+.cell[data-player="2"] {
+  background: red;
+}
