@@ -31,6 +31,10 @@ class App extends Component<{}, IState> {
   public handleCellClick = (index: number) => {
     const { board, nextPlayerTurn } = this.state;
 
+    if (board[index] !== Player.None) {
+      return
+    }
+
     let newBoard = board.slice();
 
     newBoard[index] = nextPlayerTurn
@@ -57,6 +61,16 @@ class App extends Component<{}, IState> {
     )
   }
 
+  public renderStatus = () => {
+    return (
+      <div style={{ marginTop: "30px" }}>
+        { "Player 1 is green" } <br />
+        { "Player 2 is red" } <br />
+        { "Game is ongoing" }
+      </div>
+    )
+  }
+
   render() {
     return (
       <div className="App">
@@ -64,6 +78,7 @@ class App extends Component<{}, IState> {
           <img src={logo} className="App-logo" alt="logo" />
         </header>
         { this.renderBoard() }
+        { this.renderStatus() }
       </div>
     );
   }
