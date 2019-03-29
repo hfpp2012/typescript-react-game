@@ -52,13 +52,19 @@ class App extends Component<{}, IState> {
       return board[2];
     }
 
-    return ONGOING_GAME;
+    for(const player of board) {
+      if (player === Player.None) {
+        return ONGOING_GAME;
+      }
+    }
+
+    return Player.None;
   }
 
   public handleCellClick = (index: number) => {
-    const { board, nextPlayerTurn } = this.state;
+    const { board, nextPlayerTurn, gameIsWon } = this.state;
 
-    if (board[index] !== Player.None) {
+    if (gameIsWon !== ONGOING_GAME || board[index] !== Player.None) {
       return
     }
 
@@ -66,11 +72,12 @@ class App extends Component<{}, IState> {
 
     newBoard[index] = nextPlayerTurn
 
-    let gameIsWon = this.checkIfGameIsOver(board);
+    let newGameIsWon = this.checkIfGameIsOver(newBoard);
 
     this.setState({
       board: newBoard,
-      nextPlayerTurn: 3 - nextPlayerTurn
+      nextPlayerTurn: 3 - nextPlayerTurn,
+      gameIsWon: newGameIsWon
     })
   }
 
@@ -91,11 +98,15 @@ class App extends Component<{}, IState> {
   }
 
   public renderStatus = () => {
+    const { gameIsWon } = this.state;
+
+    const winningText = gameIsWon !== Player.None ? `Player ${gameIsWon} won` : 'The game is draw'
+
     return (
       <div style={{ marginTop: "30px" }}>
         { "Player 1 is green" } <br />
         { "Player 2 is red" } <br />
-        { "Game is ongoing" }
+        { gameIsWon === ONGOING_GAME ? 'Game is ongoing' : winningText }
       </div>
     )
   }
