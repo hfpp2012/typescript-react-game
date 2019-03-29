@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+type ONGOING_GAME = -1;
+const ONGOING_GAME = -1;
+
 enum Player {
   None = 0,
   One = 1,
@@ -10,7 +13,8 @@ enum Player {
 
 interface IState {
   board: Player[];
-  nextPlayerTurn: Player
+  nextPlayerTurn: Player,
+  gameIsWon: Player | ONGOING_GAME
 }
 
 class App extends Component<{}, IState> {
@@ -25,7 +29,30 @@ class App extends Component<{}, IState> {
             Player.None, 
             Player.None, 
             Player.None],
-    nextPlayerTurn: Player.One
+    nextPlayerTurn: Player.One,
+    gameIsWon: ONGOING_GAME
+  }
+
+  public checkIfGameIsOver = (board: Player[]) => {
+    if (board[0] === board[1] && board[1] === board[2] && board[2] !== Player.None) {
+      return board[0];
+    } else if (board[3] === board[4] && board[4] === board[5] && board[5] !== Player.None) {
+      return board[3];
+    } else if (board[6] === board[7] && board[7] === board[8] && board[8] !== Player.None) {
+      return board[8];
+    } else if (board[0] === board[3] && board[3] === board[6] && board[6] !== Player.None) {
+      return board[0];
+    } else if (board[1] === board[4] && board[4] === board[7] && board[7] !== Player.None) {
+      return board[1];
+    } else if (board[2] === board[5] && board[5] === board[8] && board[8] !== Player.None) {
+      return board[2];
+    } else if (board[0] === board[4] && board[4] === board[8] && board[8] !== Player.None) {
+      return board[0];
+    } else if (board[2] === board[4] && board[4] === board[6] && board[6] !== Player.None) {
+      return board[2];
+    }
+
+    return ONGOING_GAME;
   }
 
   public handleCellClick = (index: number) => {
@@ -38,6 +65,8 @@ class App extends Component<{}, IState> {
     let newBoard = board.slice();
 
     newBoard[index] = nextPlayerTurn
+
+    let gameIsWon = this.checkIfGameIsOver(board);
 
     this.setState({
       board: newBoard,
